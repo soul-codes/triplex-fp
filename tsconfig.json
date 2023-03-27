@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "rootDir": "src",
+    "outDir": "target",
+    "plugins": [
+      {
+        "name": "ts-transform-paths",
+        "transform": "@zerollup/ts-transform-paths"
+      },
+      {
+        "transform": "@soul-codes-dev/ts-transform-static-resolve-path/output/index.js",
+        "after": true
+      },
+      {
+        "name": "kbts",
+        "transform": "kbts/lib/ts-plugin/index.cjs",
+        "libPath": [
+          "./node_modules/.pnpm/kbts@0.4.4/node_modules/kbts/lib/index.d.ts"
+        ]
+      }
+    ],
+    "sourceMap": true,
+    "types": ["node", "jest"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/__scraps"]
+}
