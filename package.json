@@ -43,16 +43,16 @@
   "typesVersions": {
     "*": {
       "Triplex": [
-        "./lib/Triplex/index.d.ts"
+        "./lib/Triplex.d.ts"
       ],
       "Unit": [
-        "./lib/Unit/index.d.ts"
+        "./lib/Unit.d.ts"
       ],
       "WeightedProgress": [
-        "./lib/WeightedProgress/index.d.ts"
+        "./lib/WeightedProgress.d.ts"
       ],
       "RetryableError": [
-        "./lib/RetryableError/index.d.ts"
+        "./lib/RetryableError.d.ts"
       ]
     }
   },
