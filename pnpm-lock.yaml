@@ -13,7 +13,7 @@ specifiers:
   fp-ts: ^2.13.1
   import-sort-style-module: ^6.0.0
   jest: ^29.4.1
-  kbts: ^0.4.4
+  kbts: ^0.4.7
   pkg-dir: ^7.0.0
   prettier: ^2.8.3
   prettier-plugin-import-sort: ^0.0.6
@@ -42,7 +42,7 @@ devDependencies:
   '@zerollup/ts-transform-paths': 1.7.18_typescript@4.6.3
   import-sort-style-module: 6.0.0
   jest: 29.4.1_nw6xvwuzmqp7vps7knduexkcvm
-  kbts: 0.4.4
+  kbts: 0.4.7
   pkg-dir: 7.0.0
   prettier: 2.8.3
   prettier-plugin-import-sort: 0.0.6_prettier@2.8.3
@@ -3598,8 +3598,8 @@ packages:
     engines: {'0': node >= 0.2.0}
     dev: true
 
-  /kbts/0.4.4:
-    resolution: {integrity: sha512-WojqK6viOOU5RfNupSqvvzRDcmacljYUqBWjtpYsIWQhm3IVVnuXROq+UKhZRgAqpIwAm3dCSJY1/+OOdFfdzw==}
+  /kbts/0.4.7:
+    resolution: {integrity: sha512-IAF6bwDEXck9uECv6BzBZfMrHKyAv+ucF9q4voI8O8ioJUNudSvqprVACWngXgfBuWa3zNTo9p4g5MBKqQUa2Q==}
     dependencies:
       mdast-util-to-markdown: 1.5.0
       mdast-util-to-string: 3.1.1

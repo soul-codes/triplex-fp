@@ -24,10 +24,7 @@
       },
       {
         "name": "kbts",
-        "transform": "kbts/lib/ts-plugin/index.cjs",
-        "libPath": [
-          "./node_modules/.pnpm/kbts@0.4.4/node_modules/kbts/lib/index.d.ts"
-        ]
+        "transform": "kbts/api-transform.cjs"
       }
     ],
     "sourceMap": true,
