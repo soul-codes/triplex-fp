@@ -1,4 +1,4 @@
-import { Kind, Kind3, URIS, URIS3 } from "fp-ts/HKT.js";
+import { Kind, Kind2, Kind3, URIS, URIS2, URIS3, URIS4 } from "fp-ts/HKT.js";
 import { Applicative3C2 } from "fp-ts/lib/Applicative.js";
 import { Apply3C2 } from "fp-ts/lib/Apply.js";
 import { Functor3C2 } from "fp-ts/lib/Functor";
@@ -79,12 +79,32 @@ declare module "fp-ts/lib/Traversable" {
       ta: Kind<T, Kind3<F, R, E, A>>
     ) => Kind3<F, R, E, Kind<T, A>>;
   }
+  export interface Sequence2<T extends URIS2> {
+    <F extends URIS3, R, E>(F: Applicative3C2<F, R, E>): <TE, A>(
+      ta: Kind2<T, TE, Kind3<F, R, E, A>>
+    ) => Kind3<F, R, E, Kind2<T, TE, A>>;
+  }
+  export interface Sequence3<T extends URIS3> {
+    <F extends URIS3, R, E>(F: Applicative3C2<F, R, E>): <TR, TE, A>(
+      ta: Kind3<T, TR, TE, Kind3<F, R, E, A>>
+    ) => Kind3<F, R, E, Kind3<T, TR, TE, A>>;
+  }
 }
 
 declare module "fp-ts/es6/Traversable" {
-  interface Sequence1<T extends URIS> {
+  export interface Sequence1<T extends URIS> {
     <F extends URIS3, R, E>(F: Applicative3C2<F, R, E>): <A>(
       ta: Kind<T, Kind3<F, R, E, A>>
     ) => Kind3<F, R, E, Kind<T, A>>;
+  }
+  export interface Sequence2<T extends URIS2> {
+    <F extends URIS3, R, E>(F: Applicative3C2<F, R, E>): <TE, A>(
+      ta: Kind2<T, TE, Kind3<F, R, E, A>>
+    ) => Kind3<F, R, E, Kind2<T, TE, A>>;
+  }
+  export interface Sequence3<T extends URIS3> {
+    <F extends URIS3, R, E>(F: Applicative3C2<F, R, E>): <TR, TE, A>(
+      ta: Kind3<T, TR, TE, Kind3<F, R, E, A>>
+    ) => Kind3<F, R, E, Kind3<T, TR, TE, A>>;
   }
 }
