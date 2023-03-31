@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/soul-codes/triplex-fp/compare/0.1.3...0.1.4) (2023-03-31)
+
+
+### Bug Fixes
+
+* 🐛 make module augmentation occur on imporing Triplex ([f518bd8](https://github.com/soul-codes/triplex-fp/commit/f518bd8b431cee35b3f308f1b59ef4df7447098e))
+
 ## [0.1.3](https://github.com/soul-codes/triplex-fp/compare/0.1.2...0.1.3) (2023-03-31)
 
 
