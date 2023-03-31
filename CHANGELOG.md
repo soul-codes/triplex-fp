@@ -1,3 +1,10 @@
+## [0.1.3](https://github.com/soul-codes/triplex-fp/compare/0.1.2...0.1.3) (2023-03-31)
+
+
+### Bug Fixes
+
+* 🐛 missing Sequence2/Sequence3 overload w/Applicative3C2 ([685c70b](https://github.com/soul-codes/triplex-fp/commit/685c70b61ae187559b5b8c6cc8b6d5a3eb145c91))
+
 ## [0.1.2](https://github.com/soul-codes/triplex-fp/compare/0.1.1...0.1.2) (2023-03-29)
 
 
