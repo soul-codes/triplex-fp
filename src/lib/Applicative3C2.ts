@@ -63,15 +63,17 @@ declare module "fp-ts/es6/Pointed" {
 
 declare module "fp-ts/lib/Applicative" {
   export interface Applicative3C2<F extends URIS3, R, E>
-    extends Apply3C2<F, R, E>,
-      Pointed3C2<F, R, E> {}
+    extends _Applicative3C2<F, R, E> {}
 }
 
 declare module "fp-ts/es6/Applicative" {
   export interface Applicative3C2<F extends URIS3, R, E>
-    extends Apply3C2<F, R, E>,
-      Pointed3C2<F, R, E> {}
+    extends _Applicative3C2<F, R, E> {}
 }
+
+export interface _Applicative3C2<F extends URIS3, R, E>
+  extends Apply3C2<F, R, E>,
+    Pointed3C2<F, R, E> {}
 
 declare module "fp-ts/lib/Traversable" {
   export interface Sequence1<T extends URIS> {

@@ -1,8 +1,9 @@
-import type { Applicative3C2 } from "fp-ts/lib/Applicative.js";
+import { Applicative3C2 } from "fp-ts/es6/Applicative";
 import { Either } from "fp-ts/lib/Either.js";
 import type { Option } from "fp-ts/lib/Option.js";
 import { Pointed3 } from "fp-ts/lib/Pointed";
 import type { Semigroup } from "fp-ts/lib/Semigroup.js";
+export { _Applicative3C2 } from "./Applicative3C2.js";
 
 export type Triplex<L, E, A> = Progress<L> | Error<E> | Available<A>;
 
