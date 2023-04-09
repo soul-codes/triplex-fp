@@ -3,6 +3,7 @@ import { Either } from "fp-ts/lib/Either.js";
 import type { Option } from "fp-ts/lib/Option.js";
 import { Pointed3 } from "fp-ts/lib/Pointed";
 import type { Semigroup } from "fp-ts/lib/Semigroup.js";
+import { Unit, unit } from "./Unit.js";
 export { _Applicative3C2 } from "./Applicative3C2.js";
 
 export type Triplex<L, E, A> = Progress<L> | Error<E> | Available<A>;
@@ -190,94 +191,182 @@ export const getApplicative = <L, E>(
 
 /**
  * Coverts a Triplex to a nested `Either` where the outer `Right` is the
- * available value, and the outer `Left` is an `Either` whose `Left` is the
- * progress, and whose `Right` is the error. Useful if mostly interested in the
- * available value.
+ * available value, and the outer `Left` is the "suspended" `Either`
+ * (whose `Left` indicates "progress" and `Right` indicates "error").
  */
-export const asEitherAvailable: <R, E, A>(
+export const getAvailableOrSuspended: <R, E, A>(
   m: Triplex<R, E, A>
 ) => Either<Either<R, E>, A> = foldW(
-  (progress) => ({
-    _tag: "Left",
-    left: { _tag: "Left", left: progress },
-  }),
-  (error) => ({
-    _tag: "Left",
-    left: { _tag: "Right", right: error },
-  }),
+  (progress) => ({ _tag: "Left", left: { _tag: "Left", left: progress } }),
+  (error) => ({ _tag: "Left", left: { _tag: "Right", right: error } }),
   (value) => ({ _tag: "Right", right: value })
 );
 
 /**
- * Coverts a Triplex to a nested `Either` where the outer `Left` is the
- * progress, and the outer `Right` is an `Either` whose `Left` is the
- * error, and whose `Right` is the value. Useful if mostly interested in the
- * "settled" case of either an available value or an error.
+ * @deprecated Use `getAvailableOrSuspended` instead.
  */
-export const asEitherSettled: <R, E, A>(
+export const asEitherAvailable = getAvailableOrSuspended;
+
+/**
+ * Coverts a Triplex to a nested `Either` where the outer `Left` is the
+ * progress, and the outer `Right` is the "settled" `Either` (whose
+ * `Left` indicates "error" and `Right` indicates "available")
+ */
+export const getSettledOrProgress: <R, E, A>(
   m: Triplex<R, E, A>
 ) => Either<R, Either<E, A>> = foldW(
-  (progress) => ({
-    _tag: "Left",
-    left: progress,
-  }),
-  (error) => ({
-    _tag: "Right",
-    right: { _tag: "Left", left: error },
-  }),
+  (progress) => ({ _tag: "Left", left: progress }),
+  (error) => ({ _tag: "Right", right: { _tag: "Left", left: error } }),
   (value) => ({ _tag: "Right", right: { _tag: "Right", right: value } })
 );
+
+/**
+ * @deprecated Use `getSettledOrProgress` instead
+ */
+export const asEitherSettled = getSettledOrProgress;
 
 /**
  * Coverts a Triplex to a nested `Either` where the outer `Left` is the
- * error, and the outer `Right` is an `Either` whose `Left` is the
- * progress, and whose `Right` is the value. Useful if mostly interested in the
- * "infallible" case of either an available value or a progress.
+ * error, and the outer `Right` is the "infallible" `Either` (whose
+ * `Left` indicates "loading" and `Right` indicates "available")
  */
-export const asEitherInfallible: <R, E, A>(
+export const getInfallibleOrError: <R, E, A>(
   m: Triplex<R, E, A>
 ) => Either<E, Either<R, A>> = foldW(
-  (progress) => ({
-    _tag: "Right",
-    right: { _tag: "Left", left: progress },
-  }),
-  (error) => ({
-    _tag: "Left",
-    left: error,
-  }),
+  (progress) => ({ _tag: "Right", right: { _tag: "Left", left: progress } }),
+  (error) => ({ _tag: "Left", left: error }),
   (value) => ({ _tag: "Right", right: { _tag: "Right", right: value } })
 );
 
 /**
- * Coverts a Triplex to an `Option` whose `Some` value is the
- * "settled" case of `Either` and available value or an error.
+ * @deprecated Use `getInfallibleOrError` instead
  */
-export const asOptionSettled: <R, E, A>(
-  m: Triplex<R, E, A>
+export const asEitherInfallible = getInfallibleOrError;
+
+/**
+ * Extracts an `Option` of a "settled" `Either` (whose `Left` indicates "error"
+ * and `Right` indicates "available").
+ */
+export const getSettled: <E, A>(
+  m: Triplex<unknown, E, A>
 ) => Option<Either<E, A>> = foldW(
-  () => ({
-    _tag: "None",
-  }),
-  (error) => ({
-    _tag: "Some",
-    value: { _tag: "Left", left: error },
-  }),
+  () => ({ _tag: "None" }),
+  (error) => ({ _tag: "Some", value: { _tag: "Left", left: error } }),
   (value) => ({ _tag: "Some", value: { _tag: "Right", right: value } })
 );
 
 /**
- * Coverts a Triplex to an `Option` whose `Some` value is the
- * "infallible" case of `Either` and available value or a progress.
+ * Extracts an `Option` of an "infallible" `Either` (whose `Left` indicates
+ * "progress" and `Right` indicates "available").
  */
-export const asOptionInfallible: <R, E, A>(
-  m: Triplex<R, E, A>
+export const getInfallible: <R, A>(
+  m: Triplex<R, unknown, A>
 ) => Option<Either<R, A>> = foldW(
-  (progress) => ({
-    _tag: "Some",
-    value: { _tag: "Left", left: progress },
-  }),
-  () => ({
-    _tag: "None",
-  }),
+  (progress) => ({ _tag: "Some", value: { _tag: "Left", left: progress } }),
+  () => ({ _tag: "None" }),
   (value) => ({ _tag: "Some", value: { _tag: "Right", right: value } })
 );
+
+/**
+ * Extracts an `Option` of an "suspended" `Either` (whose `Left` indicates
+ * "progress" and `Right` indicates "error").
+ */
+export const getSuspended: <R, E>(
+  m: Triplex<R, E, unknown>
+) => Option<Either<R, E>> = foldW(
+  (progress) => ({ _tag: "Some", value: { _tag: "Left", left: progress } }),
+  (error) => ({ _tag: "Some", value: { _tag: "Right", right: error } }),
+  () => ({ _tag: "None" })
+);
+
+/**
+ * Constructs a triplex based on an `Option` value where a `None` is regarded
+ * as "progress" and a `Some` is regarded as "available".
+ */
+export const fromOptionInfallible = <A>(
+  value: Option<A>
+): Triplex<Unit, Unit, A> =>
+  value._tag === "None" ? progress(unit) : available(value.value);
+
+/**
+ * Constructs a triplex based on an `Option` value where a `None` is regarded
+ * as "error" and a `Some` is regarded as "available".
+ */
+export const fromOptionSettled = <A>(
+  value: Option<A>
+): Triplex<Unit, Unit, A> =>
+  value._tag === "None" ? progress(unit) : available(value.value);
+
+/**
+ * Constructs a triplex based on an `Option` value where a `None` is regarded
+ * as "progress" and a `Some` is regarded as "error".
+ */
+export const fromOptionSuspended = <E>(
+  value: Option<E>
+): Triplex<Unit, E, Unit> =>
+  value._tag === "None" ? progress(unit) : error(value.value);
+
+/**
+ * Constructs a triplex based on an `Option` of a "settled" `Either`, where
+ * `Left` is regarded as "error" and `Right` is regarded as "available". The
+ * outer `None` indicates progress.
+ */
+export const fromOptionalSettled = <E, A>(
+  value: Option<Either<E, A>>
+): Triplex<Unit, E, A> =>
+  value._tag === "None"
+    ? progress(unit)
+    : value.value._tag === "Left"
+    ? error(value.value.left)
+    : available(value.value.right);
+
+/**
+ * Constructs a triplex based on an `Option` of a "infallible" `Either`, where
+ * `Left` is regarded as "progress" and `Right` is regarded as "available". The
+ * outer `None` indicates error.
+ */
+export const fromOptionalInfallible = <R, A>(
+  value: Option<Either<R, A>>
+): Triplex<R, Unit, A> =>
+  value._tag === "None"
+    ? error(unit)
+    : value.value._tag === "Left"
+    ? progress(value.value.left)
+    : available(value.value.right);
+
+/**
+ * Constructs a triplex based on an `Option` of a "suspended" `Either`, where
+ * `Left` is regarded as "progress" and `Right` is regarded as "error". The
+ * outer `None` indicates available.
+ */
+export const fromOptionalSuspended = <R, E>(
+  value: Option<Either<R, E>>
+): Triplex<R, E, Unit> =>
+  value._tag === "None"
+    ? available(unit)
+    : value.value._tag === "Left"
+    ? progress(value.value.left)
+    : error(value.value.right);
+
+/**
+ * Constructs a triplex based on a "settled" `Either`, whose `Left` is an "error"
+ * and right is "available".
+ */
+export const fromSettled = <E, A>(value: Either<E, A>): Triplex<Unit, E, A> =>
+  value._tag === "Left" ? error(value.left) : available(value.right);
+
+/**
+ * Constructs a triplex based on an "infallible" `Either`, whose `Left` is a
+ * "progress" and right is "available".
+ */
+export const fromInfallible = <R, A>(
+  value: Either<R, A>
+): Triplex<R, Unit, A> =>
+  value._tag === "Left" ? progress(value.left) : available(value.right);
+
+/**
+ * Constructs a triplex based on an "suspended" `Either`, whose `Left` is a
+ * "progress" and right is "error".
+ */
+export const fromSuspended = <R, E>(value: Either<R, E>): Triplex<R, E, Unit> =>
+  value._tag === "Left" ? progress(value.left) : error(value.right);
