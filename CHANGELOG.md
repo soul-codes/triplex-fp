@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/soul-codes/triplex-fp/compare/0.1.4...0.2.0) (2023-04-09)
+
+
+### Features
+
+* 🎸 Triplex constructors and destructors ([ed61768](https://github.com/soul-codes/triplex-fp/commit/ed617687486efdb945de6e388fe1c3d68f3ea0f8))
+
 ## [0.1.4](https://github.com/soul-codes/triplex-fp/compare/0.1.3...0.1.4) (2023-03-31)
 
 
